@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modal: ModalService) { }
 
   ngOnInit(): void {
   }
 
+  openModal() {
+    this.modal.toggleModalVisibility();
+  }
 }
