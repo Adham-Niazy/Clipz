@@ -14,6 +14,6 @@ export class NavigationComponent implements OnInit {
   }
 
   openModal() {
-    this.modal.toggleModalVisibility();
+    this.modal.toggleModalVisibility("auth");
   }
 }

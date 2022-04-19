@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
+  @Input() modalID: string = "";
 
   constructor(public modal: ModalService) { }
 
@@ -14,6 +15,6 @@ export class ModalComponent implements OnInit {
   }
 
   closeModal() {
-    this.modal.toggleModalVisibility();
+    this.modal.toggleModalVisibility(this.modalID);
   }
 }
