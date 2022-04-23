@@ -1,0 +1,31 @@
+<input
+  [type]="type"
+  class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
+  [placeholder]="placeholder"
+  [formControl]="control"
+/>
+<ng-container *ngIf="control.touched && control.dirty">
+  <p class="text-red-400" *ngIf="control.errors?.['pattern']">
+    - at least 8 characters <br />
+    - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
+    <br />
+    - Can contain special characters
+  </p>
+  <p class="text-red-400" *ngIf="control.errors?.['required']">
+    Field is required.
+  </p>
+  <p class="text-red-400" *ngIf="control.errors?.['minlength']">
+    The value you inputted is
+    {{ control.errors?.['minlength']['actualLength'] }}
+    characters long. It must be at least
+    {{ control.errors?.['minlength']['requiredLength'] }}
+    characters long.
+  </p>
+  <p class="text-red-400" *ngIf="control.errors?.['email']">
+    You must enter a valid email.
+  </p>
+  <p class="text-red-400" *ngIf="control.errors?.['min']">
+    Only 18 or older users can register.
+  </p>
+  <p class="text-red-400" *ngIf="control.errors?.['max']">Are you kidding?</p>
+</ng-container>
