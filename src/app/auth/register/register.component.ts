@@ -46,4 +46,9 @@ export class RegisterComponent {
     confirm_password: this.confirm_password,
     phone_number: this.phone_number,
   });
+
+  register() {
+    console.log("Register Called!");
+    
+  }
 }
