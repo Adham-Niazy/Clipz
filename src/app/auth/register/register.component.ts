@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+
+  constructor(private auth: AngularFireAuth) {
+
+  }
+
   name: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(3)
@@ -53,11 +58,37 @@ export class RegisterComponent {
     message: 'Please wait! Your account is being created.'
   }
 
-  register() {
+  inSubmission: boolean = false;
+
+  async register() {
+    this.inSubmission = true;
     this.updateAlert({
       show: true,
       color: 'blue',
       message: 'Please wait! Your account is being created.'
+    });
+
+    const { email, password } = this.registerForm.value
+
+    try {
+      const userCred = await this.auth.createUserWithEmailAndPassword(email, password);
+    } catch (e: any) {
+      let errMsg: string = 'An error occurred. Please try again later!';
+      switch (e.code) {
+        case 'auth/email-already-in-use': errMsg = 'Email already exists.'; break;
+        case 'auth/weak-password': errMsg = 'Password is weak'; break;
+      }
+      this.updateAlert({
+        color: 'red',
+        message: errMsg
+      });
+      this.inSubmission = false;
+      return
+    }
+
+    this.updateAlert({
+      color: 'green',
+      message: 'Success! Your account has been created.'
     });
   }
 
