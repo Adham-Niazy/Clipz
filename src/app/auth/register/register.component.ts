@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from 'src/app/services/auth.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-
-  constructor(private auth: AngularFireAuth) {
-
-  }
 
   name: FormControl = new FormControl('', [
     Validators.required,
@@ -60,6 +57,8 @@ export class RegisterComponent {
 
   inSubmission: boolean = false;
 
+  constructor(private authService: AuthService) { }
+
   async register() {
     this.inSubmission = true;
     this.updateAlert({
@@ -67,11 +66,8 @@ export class RegisterComponent {
       color: 'blue',
       message: 'Please wait! Your account is being created.'
     });
-
-    const { email, password } = this.registerForm.value
-
     try {
-      const userCred = await this.auth.createUserWithEmailAndPassword(email, password);
+      this.authService.createUser(this.registerForm.value);
     } catch (e: any) {
       let errMsg: string = 'An error occurred. Please try again later!';
       switch (e.code) {
