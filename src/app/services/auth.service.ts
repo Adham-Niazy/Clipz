@@ -43,4 +43,11 @@ export class AuthService {
       displayName: userData.name
     })
   }
+
+  public async login(credentials: { email: string, password: string }) {
+    await this.auth.signInWithEmailAndPassword(
+      credentials.email,
+      credentials.password
+    )
+  }
 }
