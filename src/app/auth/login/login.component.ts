@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -20,7 +19,6 @@ export class LoginComponent implements OnInit {
   inSubmission: boolean = false;
 
   constructor(
-    private auth: AngularFireAuth,
     private authService: AuthService
   ) { }
 

@@ -20,4 +20,12 @@ export class NavigationComponent implements OnInit {
   openModal() {
     this.modal.toggleModalVisibility("auth");
   }
+
+  async logout() {
+    try {
+      await this.auth.logout();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
