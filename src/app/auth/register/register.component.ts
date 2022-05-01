@@ -67,7 +67,12 @@ export class RegisterComponent {
       message: 'Please wait! Your account is being created.'
     });
     try {
-      this.authService.createUser(this.registerForm.value);
+      await this.authService.createUser(this.registerForm.value);
+
+      this.updateAlert({
+        color: 'green',
+        message: 'Success! Your account has been created.'
+      });
     } catch (e: any) {
       let errMsg: string = 'An error occurred. Please try again later!';
       switch (e.code) {
@@ -79,13 +84,7 @@ export class RegisterComponent {
         message: errMsg
       });
       this.inSubmission = false;
-      return
     }
-
-    this.updateAlert({
-      color: 'green',
-      message: 'Success! Your account has been created.'
-    });
   }
 
   updateAlert(change: { show?: boolean; color?: string; message?: string }) {
