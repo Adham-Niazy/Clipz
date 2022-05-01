@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 import { ModalService } from '../services/modal.service';
 
 @Component({
@@ -7,8 +8,11 @@ import { ModalService } from '../services/modal.service';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
-
-  constructor(private modal: ModalService) { }
+  constructor(
+    private modal: ModalService,
+    public auth: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
   }
