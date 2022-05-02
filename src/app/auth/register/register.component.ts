@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { AuthService } from 'src/app/services/auth.service';
+import { RegisterValidators } from '../validators/register-validators';
 
 @Component({
   selector: 'app-register',
@@ -47,7 +49,7 @@ export class RegisterComponent {
     password: this.password,
     confirm_password: this.confirm_password,
     phone_number: this.phone_number,
-  });
+  }, [RegisterValidators.match('password', 'confirm_password')]);
 
   Alert: { show: boolean; color: string; message: string } = {
     show: false,

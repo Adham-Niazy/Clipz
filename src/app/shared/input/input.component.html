@@ -30,4 +30,7 @@
     Only 18 or older users can register.
   </p>
   <p class="text-red-400" *ngIf="control.errors?.['max']">Are you kidding?</p>
+  <p class="text-red-400" *ngIf="control.errors?.['noMatch']">
+    Passwords do not match.
+  </p>
 </ng-container>
