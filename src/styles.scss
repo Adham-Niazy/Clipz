@@ -6,7 +6,15 @@
 body {
   background-color: #161d31;
 }
+.bg-secondary {
+  background-color: #283046;
+}
 
+.bg-gradient {
+  background: linear-gradient(132deg, #fc415a, #591bc5, #212335);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+}
 /* Video.js CSS START */
 .vjs-theme-forest {
   --vjs-theme-forest--primary: rgb(129, 140, 248);
@@ -94,4 +102,3 @@ body {
   font-size: 2em;
 }
 /* Video.js CSS END */
-
