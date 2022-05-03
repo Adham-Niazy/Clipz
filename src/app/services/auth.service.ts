@@ -23,7 +23,7 @@ export class AuthService {
     )
 
     this.isAuthenticatedWithDelay$ = this.isAuthenticated$.pipe(
-      delay(1500)
+      delay(2500)
     )
   }
 

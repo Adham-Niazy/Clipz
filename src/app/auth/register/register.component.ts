@@ -42,8 +42,8 @@ export class RegisterComponent {
 
   phone_number: FormControl = new FormControl('', [
     Validators.required,
-    Validators.minLength(12),
     Validators.maxLength(12),
+    RegisterValidators.egyptianMobile
   ]);
 
   registerForm: FormGroup = new FormGroup({
