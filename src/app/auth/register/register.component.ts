@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { EmailTaken } from '../validators/email-taken';
 import { RegisterValidators } from '../validators/register-validators';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  providers: [EmailTaken]
 })
 export class RegisterComponent {
 
@@ -19,6 +21,8 @@ export class RegisterComponent {
   email: FormControl = new FormControl('', [
     Validators.required,
     Validators.email
+  ], [
+    this.emailTaken.validate
   ]);
 
   age: FormControl = new FormControl('', [
@@ -59,7 +63,10 @@ export class RegisterComponent {
 
   inSubmission: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private emailTaken: EmailTaken
+  ) { }
 
   async register() {
     this.inSubmission = true;
