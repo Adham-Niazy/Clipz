@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ModalService } from '../services/modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -10,7 +11,8 @@ import { ModalService } from '../services/modal.service';
 export class NavigationComponent implements OnInit {
   constructor(
     private modal: ModalService,
-    public auth: AuthService
+    public auth: AuthService,
+    private router: Router
   ) {
   }
 
