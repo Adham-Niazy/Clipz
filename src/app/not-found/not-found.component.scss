@@ -1,0 +1,117 @@
+.ghost {
+  border-radius: 150px 150px 7px 7px;
+  -webkit-animation: ghost 1.5s ease-in-out alternate infinite;
+  animation: ghost 1.5s ease-in-out alternate infinite;
+}
+
+.corner {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #161d31;
+  position: absolute;
+  margin-top: 188px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  z-index: -1;
+}
+.corner.two {
+  margin-left: 35px;
+}
+.corner.three {
+  margin-left: 70px;
+}
+.corner.four {
+  margin-left: 105px;
+}
+
+.over {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background-color: #161d31;
+  position: absolute;
+  margin-top: 188px;
+  -webkit-transform: rotate(45deg) translateX(4px) translateY(4px);
+  transform: rotate(45deg) translateX(4px) translateY(4px);
+}
+.over.two {
+  margin-left: 35px;
+}
+.over.three {
+  margin-left: 70px;
+}
+.over.four {
+  margin-left: 105px;
+}
+
+.ghost-shadow {
+  border-radius: 100%;
+  -webkit-animation: shadow 1.5s ease-in-out alternate infinite;
+  animation: shadow 1.5s ease-in-out alternate infinite;
+}
+
+@-webkit-keyframes shadow {
+  0% {
+    -webkit-transform: scale(1) translateY(0px);
+    transform: scale(1) translateY(0px);
+  }
+  100% {
+    -webkit-transform: scale(0.8) translateY(75px);
+    transform: scale(0.8) translateY(75px);
+  }
+}
+
+@keyframes shadow {
+  0% {
+    -webkit-transform: scale(1) translateY(0px);
+    transform: scale(1) translateY(0px);
+  }
+  100% {
+    -webkit-transform: scale(0.8) translateY(75px);
+    transform: scale(0.8) translateY(75px);
+  }
+}
+@-webkit-keyframes ghost {
+  0% {
+    -webkit-transform: scale(1) translateY(0px);
+    transform: scale(1) translateY(0px);
+  }
+  100% {
+    -webkit-transform: scale(1) translateY(-40px);
+    transform: scale(1) translateY(-40px);
+  }
+}
+@keyframes ghost {
+  0% {
+    -webkit-transform: scale(1) translateY(0px);
+    transform: scale(1) translateY(0px);
+  }
+  100% {
+    -webkit-transform: scale(1) translateY(-40px);
+    transform: scale(1) translateY(-40px);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes cube {
+  from {
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    opacity: 1;
+  }
+  to {
+    transform: scale(20) rotate(960deg) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
