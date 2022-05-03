@@ -9,11 +9,17 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { NavigationComponent } from './navigation/navigation.component';
 import { environment } from 'src/environments/environment';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    HomeComponent,
+    AboutComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
