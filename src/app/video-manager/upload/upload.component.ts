@@ -66,6 +66,7 @@ export class UploadComponent implements OnInit {
 
 
   async uploadFile() {
+    this.uploadForm.disable();
     this.inSubmission = true;
     this.updateAlert({
       show: true,
@@ -94,9 +95,7 @@ export class UploadComponent implements OnInit {
           fileName: `${clipFileName}.mp4`,
           url
         }
-
         this.clipsService.createClip(clip);
-
         this.updateAlert({
           color: 'green',
           message: 'Success! Your clip is now ready to share with the world.'
@@ -104,6 +103,7 @@ export class UploadComponent implements OnInit {
         this.percentage.show = false;
       },
       error: (error) => {
+        this.uploadForm.enable();
         this.updateAlert({
           color: 'red',
           message: 'An error occurred while uploading. Please try again later!'
