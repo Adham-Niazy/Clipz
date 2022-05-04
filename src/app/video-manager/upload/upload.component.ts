@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { last } from 'rxjs/operators';
+import { last, switchMap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
+import firebase from 'firebase/compat/app';
+
+import { ClipService } from 'src/app/services/clip.service';
 
 @Component({
   selector: 'app-upload',
@@ -14,6 +18,7 @@ export class UploadComponent implements OnInit {
   file: File | null = null;
   nextStep: boolean = false;
   percentage: { value: number, show: boolean } = { value: 0, show: false };
+  user: firebase.User | null = null;
 
   title: FormControl = new FormControl('', [
     Validators.required,
@@ -32,8 +37,12 @@ export class UploadComponent implements OnInit {
   inSubmission: boolean = false;
 
   constructor(
-    private storage: AngularFireStorage
-  ) { }
+    private storage: AngularFireStorage,
+    private auth: AngularFireAuth,
+    private clipsService: ClipService
+  ) {
+    auth.user.subscribe(user => this.user = user);
+  }
 
   ngOnInit(): void {
   }
@@ -68,14 +77,26 @@ export class UploadComponent implements OnInit {
     const clipFileName = uuid();
     const clipPath = `clips/${clipFileName}.mp4`;
     const task = this.storage.upload(clipPath, this.file);
+    const clipRef = this.storage.ref(clipPath);
     task.percentageChanges().subscribe(progress => {
       this.percentage.value = progress as number / 100;
     })
 
     task.snapshotChanges().pipe(
-      last()
+      last(),
+      switchMap(() => clipRef.getDownloadURL())
     ).subscribe({
-      next: () => {
+      next: (url) => {
+        const clip = {
+          uid: this.user?.uid as string,
+          displayName: this.user?.displayName as string,
+          title: this.title.value,
+          fileName: `${clipFileName}.mp4`,
+          url
+        }
+
+        this.clipsService.createClip(clip);
+
         this.updateAlert({
           color: 'green',
           message: 'Success! Your clip is now ready to share with the world.'
