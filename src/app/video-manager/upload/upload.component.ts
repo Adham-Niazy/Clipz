@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { last } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 @Component({
@@ -12,6 +13,7 @@ export class UploadComponent implements OnInit {
   isDragover: boolean = false;
   file: File | null = null;
   nextStep: boolean = false;
+  percentage: { value: number, show: boolean } = { value: 0, show: false };
 
   title: FormControl = new FormControl('', [
     Validators.required,
@@ -21,6 +23,13 @@ export class UploadComponent implements OnInit {
   uploadForm: FormGroup = new FormGroup({
     title: this.title
   })
+
+  Alert: { show: boolean; color: string; message: string } = {
+    show: false,
+    color: 'blue',
+    message: 'Please wait! Your clip is being uploaded.'
+  }
+  inSubmission: boolean = false;
 
   constructor(
     private storage: AngularFireStorage
@@ -47,10 +56,47 @@ export class UploadComponent implements OnInit {
   }
 
 
-  uploadFile() {
+  async uploadFile() {
+    this.inSubmission = true;
+    this.updateAlert({
+      show: true,
+      color: 'blue',
+      message: 'Please wait! Your clip is being uploaded.'
+    });
+    this.percentage.show = true;
+
     const clipFileName = uuid();
     const clipPath = `clips/${clipFileName}.mp4`;
+    const task = this.storage.upload(clipPath, this.file);
+    task.percentageChanges().subscribe(progress => {
+      this.percentage.value = progress as number / 100;
+    })
 
-    this.storage.upload(clipPath, this.file);
+    task.snapshotChanges().pipe(
+      last()
+    ).subscribe({
+      next: () => {
+        this.updateAlert({
+          color: 'green',
+          message: 'Success! Your clip is now ready to share with the world.'
+        });
+        this.percentage.show = false;
+      },
+      error: (error) => {
+        this.updateAlert({
+          color: 'red',
+          message: 'An error occurred while uploading. Please try again later!'
+        });
+        this.inSubmission = false;
+        this.percentage.show = false;
+      }
+    });
+  }
+
+  updateAlert(change: { show?: boolean; color?: string; message?: string }) {
+    this.Alert = {
+      ...this.Alert,
+      ...change
+    }
   }
 }
