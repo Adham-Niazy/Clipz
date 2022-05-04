@@ -51,7 +51,9 @@ export class UploadComponent implements OnInit {
     // End Dragging Effect
     this.isDragover = false;
     // Hold a reference to the file
-    this.file = (e as DragEvent).dataTransfer?.files.item(0) ?? null;
+    this.file = (e as DragEvent).dataTransfer ?
+      (e as DragEvent).dataTransfer?.files.item(0) ?? null :
+      (e.target as HTMLInputElement).files?.item(0) ?? null;
     // Check if the file match our needs
     if (!this.file || this.file.type !== 'video/mp4') {
       return;
