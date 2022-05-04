@@ -26,12 +26,12 @@ import { ClipComponent } from './clip/clip.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     AuthModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    VideoManagerModule
+    VideoManagerModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
