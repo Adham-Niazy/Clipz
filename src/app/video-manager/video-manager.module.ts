@@ -5,6 +5,7 @@ import { VideoManagerRoutingModule } from './video-manager-routing.module';
 import { ManageComponent } from './manage/manage.component';
 import { UploadComponent } from './upload/upload.component';
 import { SharedModule } from '../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
+    ReactiveFormsModule,
     VideoManagerRoutingModule
   ]
 })
