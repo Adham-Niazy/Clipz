@@ -56,7 +56,7 @@
 
         <div class="mt-4 text-right">
           <button
-            [disabled]="inSubmission"
+            [disabled]="inSubmission || uploadForm.invalid"
             [ngClass]="{
               'opacity-50': inSubmission,
               'hover:bg-indigo-700': !inSubmission

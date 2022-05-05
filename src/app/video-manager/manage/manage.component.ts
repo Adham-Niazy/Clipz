@@ -42,6 +42,14 @@ export class ManageComponent implements OnInit {
     this.router.navigateByUrl(`/manage?sort=${value}`)
   }
 
+  update(e: IClip) {
+    this.clips.forEach((el, idx) => {
+      if (el.docID === e.docID) {
+        this.clips[idx].title = e.title
+      }
+    })
+  }
+
   openModal(clip_info: IClip) {
     this.modal.toggleModalVisibility('edit-clip');
     this.active_clip = clip_info;
