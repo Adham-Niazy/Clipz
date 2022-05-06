@@ -15,10 +15,18 @@
 
     <div class="mt-4 text-right">
       <button
-        [disabled]="inSubmission || editForm.invalid"
+        [disabled]="
+          inSubmission || editForm.invalid || title.value === activeClip?.title
+        "
         [ngClass]="{
-          'opacity-50': inSubmission,
-          'hover:bg-indigo-700': !inSubmission
+          'opacity-50':
+            inSubmission ||
+            editForm.invalid ||
+            title.value === activeClip?.title,
+          'hover:bg-indigo-700':
+            !inSubmission &&
+            !editForm.invalid &&
+            !(title.value === activeClip?.title)
         }"
         type="submit"
         class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 focus:outline-none"
