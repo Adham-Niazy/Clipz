@@ -50,6 +50,11 @@ export class ManageComponent implements OnInit {
     })
   }
 
+  async deleteClip(clip_info: IClip) {
+    this.clipService.deleteClip(clip_info);
+    this.clips = this.clips.filter(el => el.docID !== clip_info.docID);
+  }
+
   openModal(clip_info: IClip) {
     this.modal.toggleModalVisibility('edit-clip');
     this.active_clip = clip_info;
