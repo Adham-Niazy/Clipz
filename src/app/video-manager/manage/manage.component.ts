@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+
 import IClip from 'src/app/models/clip.model';
 import { ClipService } from 'src/app/services/clip.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -13,6 +15,7 @@ export class ManageComponent implements OnInit {
   sort_order: string = '1';
   clips: IClip[] = [];
   active_clip: IClip | null = null;
+  sort$: BehaviorSubject<string> = new BehaviorSubject(this.sort_order);
 
   constructor(
     private router: Router,
@@ -24,9 +27,10 @@ export class ManageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params: Params) => {
       this.sort_order = params['get']('sort') ?? '1';
+      this.sort$.next(this.sort_order);
     });
 
-    this.clipService.getUserClips().subscribe(docs => {
+    this.clipService.getUserClips(this.sort$).subscribe(docs => {
       this.clips = [];
       docs.forEach(doc => {
         this.clips.push({
@@ -39,7 +43,7 @@ export class ManageComponent implements OnInit {
 
   sort(e: Event) {
     const { value } = (e.target as HTMLSelectElement);
-    this.router.navigateByUrl(`/manage?sort=${value}`)
+    this.router.navigateByUrl(`/manage?sort=${value}`);
   }
 
   update(e: IClip) {
