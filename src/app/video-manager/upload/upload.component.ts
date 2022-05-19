@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { last, switchMap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { combineLatest, forkJoin } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import firebase from 'firebase/compat/app';
 
@@ -96,6 +96,7 @@ export class UploadComponent implements OnDestroy {
 
     this.task = this.storage.upload(clipPath, this.file);
     const clipRef = this.storage.ref(clipPath);
+    const screenshotRef = this.storage.ref(screenshotPath);
     combineLatest([
       this.task.percentageChanges(),
       this.screenshotTask.percentageChanges()
@@ -107,19 +108,26 @@ export class UploadComponent implements OnDestroy {
       this.percentage.value = total / 200;
     })
 
-    this.task.snapshotChanges().pipe(
-      last(),
-      switchMap(() => clipRef.getDownloadURL())
+    forkJoin([
+      this.task.snapshotChanges(),
+      this.screenshotTask.snapshotChanges()
+    ]).pipe(
+      switchMap(() => forkJoin([
+        clipRef.getDownloadURL(),
+        screenshotRef.getDownloadURL()
+      ]))
     ).subscribe({
-      next: async (url) => {
+      next: async (urls) => {
+        const [clip_url, screenshot_url] = urls;
         const clip = {
           uid: this.user?.uid as string,
           displayName: this.user?.displayName as string,
           title: this.title.value,
           fileName: `${clipFileName}.mp4`,
-          url,
+          url: clip_url,
+          screenshot_url: screenshot_url,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }
+        };
         const clipDocRef = await this.clipsService.createClip(clip);
         this.updateAlert({
           color: 'green',
