@@ -50,7 +50,7 @@ export class UploadComponent implements OnDestroy {
     ffmpeg.init();
   }
 
-  storeFile(e: Event) {
+  async storeFile(e: Event) {
     // End Dragging Effect
     this.isDragover = false;
     // Hold a reference to the file
@@ -61,6 +61,9 @@ export class UploadComponent implements OnDestroy {
     if (!this.file || this.file.type !== 'video/mp4') {
       return;
     }
+    // Store the video in service to get screenshots from it
+    await this.ffmpeg.getScreenshots(this.file)
+
     // For UX: Set Title Field to be the file name
     this.title.setValue(
       this.file.name.replace(/\.[^/.]+$/, '')
