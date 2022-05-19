@@ -52,6 +52,7 @@ export class UploadComponent implements OnDestroy {
   }
 
   async storeFile(e: Event) {
+    if (this.ffmpeg.isRunning) return;
     // End Dragging Effect
     this.isDragover = false;
     // Hold a reference to the file
@@ -59,9 +60,7 @@ export class UploadComponent implements OnDestroy {
       (e as DragEvent).dataTransfer?.files.item(0) ?? null :
       (e.target as HTMLInputElement).files?.item(0) ?? null;
     // Check if the file match our needs
-    if (!this.file || this.file.type !== 'video/mp4') {
-      return;
-    }
+    if (!this.file || this.file.type !== 'video/mp4') return;
     // Store the video in service to get screenshots from it
     this.screenshots = await this.ffmpeg.getScreenshots(this.file)
 
