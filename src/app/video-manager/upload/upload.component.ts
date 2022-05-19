@@ -22,6 +22,7 @@ export class UploadComponent implements OnDestroy {
   percentage: { value: number, show: boolean } = { value: 0, show: false };
   user: firebase.User | null = null;
   task?: AngularFireUploadTask;
+  screenshots: string[] = [];
 
   title: FormControl = new FormControl('', [
     Validators.required,
@@ -62,7 +63,7 @@ export class UploadComponent implements OnDestroy {
       return;
     }
     // Store the video in service to get screenshots from it
-    await this.ffmpeg.getScreenshots(this.file)
+    this.screenshots = await this.ffmpeg.getScreenshots(this.file)
 
     // For UX: Set Title Field to be the file name
     this.title.setValue(
