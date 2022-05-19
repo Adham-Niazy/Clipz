@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { last, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import firebase from 'firebase/compat/app';
 
@@ -95,8 +96,15 @@ export class UploadComponent implements OnDestroy {
 
     this.task = this.storage.upload(clipPath, this.file);
     const clipRef = this.storage.ref(clipPath);
-    this.task.percentageChanges().subscribe(progress => {
-      this.percentage.value = progress as number / 100;
+    combineLatest([
+      this.task.percentageChanges(),
+      this.screenshotTask.percentageChanges()
+    ]).subscribe(([clip_progress, screenshot_progress]) => {
+      if (!clip_progress || !screenshot_progress) return;
+
+      const total = clip_progress as number + screenshot_progress as number;
+
+      this.percentage.value = total / 200;
     })
 
     this.task.snapshotChanges().pipe(
