@@ -56,6 +56,7 @@ export class UploadComponent implements OnDestroy {
 
   async storeFile(e: Event) {
     if (this.ffmpeg.isRunning) return;
+    this.updateAlert({ show: false });
     // End Dragging Effect
     this.isDragover = false;
     // Hold a reference to the file
@@ -63,7 +64,14 @@ export class UploadComponent implements OnDestroy {
       (e as DragEvent).dataTransfer?.files.item(0) ?? null :
       (e.target as HTMLInputElement).files?.item(0) ?? null;
     // Check if the file match our needs
-    if (!this.file || this.file.type !== 'video/mp4') return;
+    if (!this.file || this.file.type !== 'video/mp4') {
+      this.updateAlert({ show: true, color: 'red', message: "Sorry, but your file must be MP4." });
+      return;
+    };
+    if (this.file.size > 25 * 1000 * 1000) {
+      this.updateAlert({ show: true, color: 'red', message: "Sorry, but your clip size must be 25 MB maximum." });
+      return;
+    }
     // Store the video in service to get screenshots from it
     this.screenshots = await this.ffmpeg.getScreenshots(this.file)
     this.selectedScreenshot = this.screenshots[0];

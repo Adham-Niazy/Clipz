@@ -13,6 +13,10 @@
     </ng-container>
 
     <ng-template #uploadEditorCtr>
+      <app-alert *ngIf="Alert.show" [color]="Alert.color">
+        <p>{{ Alert.message }}</p>
+        <p *ngIf="percentage.show">{{ percentage.value | percent }}</p>
+      </app-alert>
       <!-- Upload Dropbox -->
       <ng-container *ngIf="!nextStep; else uploadFormCtr">
         <div
@@ -41,10 +45,6 @@
 
       <!-- Video Editor -->
       <ng-template #uploadFormCtr>
-        <app-alert *ngIf="Alert.show" [color]="Alert.color">
-          <p>{{ Alert.message }}</p>
-          <p *ngIf="percentage.show">{{ percentage.value | percent }}</p>
-        </app-alert>
         <!-- Form -->
         <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
           <!-- Screenshots -->
