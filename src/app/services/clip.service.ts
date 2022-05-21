@@ -97,4 +97,8 @@ export class ClipService {
     if (currClipLength === this.pageClips.length) this.reachedMax = true;
     this.pendingRequest = false;
   }
+
+  public emptyClipsList() {
+    this.pageClips = [];
+  }
 }
