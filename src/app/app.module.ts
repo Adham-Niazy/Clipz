@@ -13,7 +13,6 @@ import { environment } from 'src/environments/environment';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { VideoManagerModule } from './video-manager/video-manager.module';
 import { ClipComponent } from './clip/clip.component';
 import { ClipsListComponent } from './clips-list/clips-list.component';
 import { FbTimestampPipe } from './pipes/fb-timestamp.pipe';
@@ -36,7 +35,6 @@ import { FbTimestampPipe } from './pipes/fb-timestamp.pipe';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    VideoManagerModule,
     AppRoutingModule
   ],
   providers: [],
