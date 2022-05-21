@@ -17,52 +17,73 @@
 </section>
 
 <!-- User's Video Section -->
-<div class="container mx-auto my-8">
+<div class="container mx-auto my-8 flex justify-center">
   <!-- Video List -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-    <div
-      *ngFor="let clip of clips"
-      class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start"
+  <ng-container *ngIf="clips.length === 0 && !loading">
+    <span
+      *ngIf="clips.length === 0"
+      class="text-center text-3xl p-8 animate-pulse"
     >
-      <!-- Image -->
-      <a href="#">
-        <img
-          class="card-img-top rounded-tl-2xl w-full"
-          src="assets/img/1.jpg"
-        />
-      </a>
+      Oops!, You don't have any clips yet.
+    </span>
+  </ng-container>
 
-      <!-- Body -->
-      <div class="p-6 text-2xl">
-        <!-- Link -->
-        <a [routerLink]="['/clip', clip.docID]" class="font-bold mb-2">
-          {{ clip.title }}
-        </a>
-        <a
-          href="#"
-          class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded"
-        >
-          Copy Link
-        </a>
-      </div>
+  <ng-container>
+    <span
+      *ngIf="loading"
+      class="material-icons text-center text-6xl p-8 animate-spin"
+    >
+      autorenew
+    </span>
+  </ng-container>
 
-      <!-- Actions -->
-      <div class="flex text-center text-2xl bg-gray-800 p-2 mt-auto">
-        <a
-          (click)="openModal(clip)"
-          class="flex-1 p-2 cursor-pointer border-right border-r-2 border-gray-700 transition hover:text-indigo-400"
-        >
-          <span class="material-icons text-base">build</span>
+  <ng-container *ngIf="clips.length > 0">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div
+        *ngFor="let clip of clips"
+        class="mt-6 rounded-tl-2xl rounded-br-2xl shadow-xl bg-secondary flex flex-col justify-start"
+      >
+        <!-- Image -->
+        <a href="#">
+          <img
+            class="card-img-top rounded-tl-2xl w-full"
+            [src]="clip.screenshotURL"
+            crossorigin
+          />
         </a>
-        <a
-          (click)="deleteClip(clip)"
-          class="flex-1 p-2 cursor-pointer rounded-br-2xl transition hover:text-red-400"
-        >
-          <span class="material-icons text-base">delete</span>
-        </a>
+
+        <!-- Body -->
+        <div class="p-6 text-2xl">
+          <!-- Link -->
+          <a [routerLink]="['/clip', clip.docID]" class="font-bold mb-2">
+            {{ clip.title }}
+          </a>
+          <a
+            href="#"
+            class="bg-gray-400 text-white px-2 py-1 ml-2 text-sm rounded"
+          >
+            Copy Link
+          </a>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex text-center text-2xl bg-gray-800 p-2 mt-auto">
+          <a
+            (click)="openModal(clip)"
+            class="flex-1 p-2 cursor-pointer border-right border-r-2 border-gray-700 transition hover:text-indigo-400"
+          >
+            <span class="material-icons text-base">build</span>
+          </a>
+          <a
+            (click)="deleteClip(clip)"
+            class="flex-1 p-2 cursor-pointer rounded-br-2xl transition hover:text-red-400"
+          >
+            <span class="material-icons text-base">delete</span>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
 
 <app-edit [activeClip]="active_clip" (update)="update($event)"></app-edit>

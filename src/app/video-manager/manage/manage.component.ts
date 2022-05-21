@@ -12,8 +12,10 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./manage.component.scss']
 })
 export class ManageComponent implements OnInit {
+  loading: boolean = false;
   sort_order: string = '1';
   clips: IClip[] = [];
+  clipss: IClip[] = [];
   active_clip: IClip | null = null;
   sort$: BehaviorSubject<string> = new BehaviorSubject(this.sort_order);
 
@@ -25,6 +27,7 @@ export class ManageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.route.queryParamMap.subscribe((params: Params) => {
       this.sort_order = params['get']('sort') ?? '1';
       this.sort$.next(this.sort_order);
@@ -38,6 +41,7 @@ export class ManageComponent implements OnInit {
           ...doc.data()
         })
       })
+      this.loading = false;
     });
   }
 
