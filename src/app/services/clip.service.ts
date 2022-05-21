@@ -69,10 +69,9 @@ export class ClipService {
 
   public async getClips() {
     // We can not make another call while there is one opened already.
-    if (this.pendingRequest || this.reachedMax) return;
+    if (this.pendingRequest) return;
 
     this.pendingRequest = true;
-    const currClipLength = this.pageClips.length;
 
     let query = this.clipsCollection.ref.orderBy(
       'timestamp', 'desc'
@@ -94,7 +93,6 @@ export class ClipService {
         ...doc.data()
       });
     })
-    if (currClipLength === this.pageClips.length) this.reachedMax = true;
     this.pendingRequest = false;
   }
 
